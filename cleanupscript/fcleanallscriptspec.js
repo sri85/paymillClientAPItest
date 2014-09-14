@@ -13,14 +13,14 @@ frisby.globalSetup({
     headers: { 'Authorization': 'Basic ZjlmYjkzZTYwOWQ0ZDhlNmRiMDRiZmQ0MDBiYjM2MTU6Og==' }
   }
 });
-frisby.create("")
+frisby.create("This is a clean up operation")
         .get("https://api.paymill.com/v2.1/clients/")
         
         .afterJSON(function(response){
         var x =response.data_count;
         console.log(x)
         for(var i =0;i<x;i++){
-            frisby.create("")
+            frisby.create("This is a clean up operation")
                     
                   .delete(serverDetails.url+response.data[i].id)
         .toss()

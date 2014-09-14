@@ -168,3 +168,16 @@ frisby.create("Check whether the API will return 401 error when passing email as
       
 
 
+frisby.create("")
+        .get("https://api.paymill.com/v2.1/clients/")
+        
+        .afterJSON(function(response){
+        var x =response.data_count;
+        console.log(x)
+        for(var i =0;i<x;i++){
+            frisby.create("")
+                    
+                  .delete(serverDetails.url+response.data[i].id)
+        .toss()
+        }
+        }).toss();

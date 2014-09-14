@@ -1,6 +1,6 @@
 var frisby = require('frisby');
 
-// These tests are for testing paymill create API
+// These tests are for testing paymill create API https://developers.paymill.com/en/reference/api-reference/index.html#create-client
 var serverDetails = {
 "url": "https://api.paymill.com/v2.1/clients/",
 "email":"test@test.com",
@@ -42,9 +42,9 @@ frisby.create("Check whether it is possible to create client on passing valid em
                .delete(serverDetails.url+response.data.id)
                .toss()
       
-      })
+      }).toss();
       
-      .toss();
+      
       
 frisby.create("Check whether it is possible to create client on passing undefined as email and  description, expected result is that the client must be created")
        .post(serverDetails.url,{
@@ -61,10 +61,10 @@ frisby.create("Check whether it is possible to create client on passing undefine
                .delete(serverDetails.url+response.data.id)
                .toss()
       
-      })
-      .toss();
+      }).toss();
       
-frisby.create("Check whether the API will return 401 error when passing email as NaN")
+      
+frisby.create("Check whether the API will return 400 error when passing email as NaN")
        .post(serverDetails.url,{
             email:Number("foo")
             
@@ -72,18 +72,18 @@ frisby.create("Check whether the API will return 401 error when passing email as
       .expectStatus(400)
       .expectHeaderContains('content-type','application/json')
       .expectJSON({
-    "error": {
-        "messages": {
-            "emailAddressInvalidFormat": "'NaN' is not a valid email address."
-        },
-        "field": "email"
-    }
-}
-      )
-      .toss()
+            "error": {
+                "messages": {
+                    "emailAddressInvalidFormat": "'NaN' is not a valid email address."
+                },
+                "field": "email"
+            }
+       }).toss();
+      
+      
 
       
-frisby.create("Check whether the API will return 401 error when passing an invalid email")
+frisby.create("Check whether the API will return 400 error when passing an invalid email")
        .post(serverDetails.url,{
             email:serverDetails.invalidEmailformat
       })
@@ -96,9 +96,9 @@ frisby.create("Check whether the API will return 401 error when passing an inval
         },
         "field": "email"
     }
-}
-      )
-      .toss()
+}).toss();
+      
+      
       
 frisby.create("Check whether it is possible to create client on passing valid in a language other than English(In this case Chinese)")
       .post(serverDetails.url,{
@@ -115,8 +115,8 @@ frisby.create("Check whether it is possible to create client on passing valid in
                .delete(serverDetails.url+response.data.id)
                .toss()
       
-      })
-      .toss()
+      }).toss();
+      
       
  frisby.create("Check that API returns a 400 error on passing invalid parameter(i.e passing EMAIL instaed of email) ")
       .post(serverDetails.url,{
@@ -127,8 +127,8 @@ frisby.create("Check whether it is possible to create client on passing valid in
       .expectJSON({
                     "exception": "Api_Exception_InvalidParameter",
                      "error": "EMAIL"
-      })
-      .toss(); 
+      }).toss();
+       
       
      
 frisby.create("Check that API returns a 400 error on passing invalid parameter")
@@ -142,11 +142,11 @@ frisby.create("Check that API returns a 400 error on passing invalid parameter")
         email:null
         })
         .toss()
-      })
-      .toss();
+      }).toss();
+      
 
 
-frisby.create("Check whether the API will return 401 error when passing email as quotes")
+frisby.create("Check whether the API will return 400 error when passing email as quotes")
        .post(serverDetails.url,{
             email:'""'
       })
@@ -159,10 +159,19 @@ frisby.create("Check whether the API will return 401 error when passing email as
                                     },
                         "field": "email"
                      }
-      })
+      }).toss();
       
-    .toss();     
+         
 
+frisby.create("")
+.post(serverDetails.url,{
+            email:serverDetails.firstEmail,
+            
+      })
+.addHeader("Authorization","")
+.expectStatus(401)
+.expectJSON({"error":"Access Denied","exception":"InvalidAuthentication"
+      }).toss();
       
       
       

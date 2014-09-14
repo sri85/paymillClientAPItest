@@ -1,5 +1,5 @@
 var frisby = require('frisby');
-
+//These tests test for List Clients https://developers.paymill.com/en/reference/api-reference/index.html#list-clients
 // Server Details
 var serverDetails = {
 "url": "https://api.paymill.com/v2.1/clients/",
@@ -7,10 +7,8 @@ var serverDetails = {
 "secondTestEmail":"test@1.org",
 "thirdTestEmail":"test@1.pl"
 
-
-
 };
-//Globalsetup which will be used for all the requests
+//Global setup which will be used for all the requests
 frisby.globalSetup({ 
   request: {
     headers: { 'Authorization': 'Basic ZjlmYjkzZTYwOWQ0ZDhlNmRiMDRiZmQ0MDBiYjM2MTU6Og==' }
@@ -47,7 +45,7 @@ frisby.create("Check whether API returns proper data on passing count and order 
                    
  
 
-        
+ //Test Data Cleanup       
 frisby.create("Cleaning up data")
         .get("https://api.paymill.com/v2.1/clients/")
         
@@ -62,36 +60,36 @@ frisby.create("Cleaning up data")
         }
         }).toss();
         
-        
+//Test Data Setup        
 frisby.create("Creating test data for the second test")
         .post(serverDetails.url,{
         email:serverDetails.firstTestEmail,
         description:'a'
-        })
-        .toss();
+        }).toss();
+//Test Data Setup        
 frisby.create("Creating test data for the second test")
         .post(serverDetails.url,{
-        email:serverDetails.secondTestEmail,
-        description:'b'
-        })
-        .toss();          
+            email:serverDetails.secondTestEmail,
+            description:'b'
+        }).toss();
+//Test Data Setup                  
 frisby.create("Creating test data for the second test")
         .post(serverDetails.url,{
-        email:serverDetails.secondTestEmail,
-        description:'c'
-        })
-        .toss();
+            email:serverDetails.secondTestEmail,
+            description:'c'
+        }).toss();
         
-frisby.create("Check the data returned on passing offset and order")
+//Actual Test        
+frisby.create("Validate the data returned by API on passing offset and order ")
                    .get(serverDetails.url+"?offset=2&order=email_desc")
                    .afterJSON(function(response){
                     expect(serverDetails.secondTestEmail).toEqual(response.data[0].email)
-                   })
+                   }).toss();
 
-                   .toss();
+                   
  
 
-        
+//TestData Cleanup        
 frisby.create("Cleaning up data ")
         .get("https://api.paymill.com/v2.1/clients/")
         
@@ -102,51 +100,53 @@ frisby.create("Cleaning up data ")
             frisby.create("")
                     
                   .delete(serverDetails.url+response.data[i].id)
-        .toss()
+                   .toss()
         }
         }).toss();
         
+//Test        
 frisby.create("Check whether the API returns 400 error on passing NaN for the offset parameter")
        .get(serverDetails.url+"?offset=NaN")
        .expectStatus(400)
        .expectJSON({
-    "error": {
-        "messages": {
-            "notDigits": "'NaN' must contain only digits"
-        },
-        "field": "offset"
-    }
-})
-.toss();
+            "error": {
+                "messages": {
+                    "notDigits": "'NaN' must contain only digits"
+                },
+                "field": "offset"
+            }
+        }).toss();
+
 
 frisby.create("Check whether the API returns 400 error on passing an empty string for offset parameter")
        .get(serverDetails.url+"?offset=''")
        .expectStatus(400)
        .expectJSON({
-    "error": {
-        "messages": {
-            "notDigits": "'''' must contain only digits"
-        },
-        "field": "offset"
-    }
-})
-.toss(); 
-
+            "error": {
+                "messages": {
+                    "notDigits": "'''' must contain only digits"
+                },
+                "field": "offset"
+            }
+    }).toss();
+ 
+//Test
 frisby.create("Check whether the API throws 401 Error when trying to access the API without credentials.")
        .get(serverDetails.url+"?offset=")
        .addHeader("Authorization","")
        .expectStatus(401)
        .expectJSON({"error":"Access Denied","exception":"InvalidAuthentication"
-      })
-.toss();
+      }).toss();
 
-frisby.create("")
+//Test Data Setup
+frisby.create("Test Data setup")
 .post(serverDetails.url,{
             email:serverDetails.firstTestemail,
             
       })
       
       .afterJSON(function(response){
+      //TEST
  //STEP2: This is the step where we get the details of the client where which we had created in the previous state.
       frisby.create("Check whether get client details API returns a 200 when proper client details are passed ")
       .get(serverDetails.url+"?email="+serverDetails.firstTestemail)
@@ -159,14 +159,14 @@ frisby.create("")
       .toss()
       })
       .afterJSON(function(response) {
-        frisby.create("")
+        frisby.create("Test Data Cleanup")
         .delete(serverDetails.url+response.data.id)
         .toss()
       
-      })
-      .toss() 
-      
-frisby.create("")
+      }).toss();
+       
+//Test Data Setup      
+frisby.create("Test Data Setup")
 .post(serverDetails.url,{
             email:serverDetails.email,
             
@@ -174,6 +174,7 @@ frisby.create("")
       
       .afterJSON(function(response){
  //STEP2: This is the step where we get the details of the client where which we had created in the previous state.
+ //TEST
       frisby.create("Check whether get client details API returns a 200 when proper client details are passed ")
       .get(serverDetails.url+"?email='test@1.org'")
       .expectStatus(200)
@@ -190,17 +191,17 @@ frisby.create("")
         .delete(serverDetails.url+response.data.id)
         .toss()
       
-      })
-      .toss() 
+      }).toss() ;
       
-frisby.create("")
+      
+frisby.create("Test Data Setup")
 .post(serverDetails.url,{
             email:serverDetails.firstTestEmail,
             
       })
 .afterJSON(function(response){
  
-frisby.create("")
+frisby.create("Test Data Setup")
        .post(serverDetails.url,{
          email:serverDetails.secondTestEmail
        
@@ -228,5 +229,5 @@ frisby.create("")
         
         .toss()
       
-      })
-      .toss() 
+      }).toss();
+       

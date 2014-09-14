@@ -1,6 +1,6 @@
 var frisby = require('frisby');
 
-// Tests for get Client details api, 
+// Tests for get Client details api, https://developers.paymill.com/en/reference/api-reference/index.html#client-details
 var serverDetails = {
 "url": "https://api.paymill.com/v2.1/clients/",
 "email":"test@test.com",
@@ -29,7 +29,7 @@ frisby.create("")
       })
       .afterJSON(function(response){
  //STEP2: This is the step where we get the details of the client where which we had created in the previous state.
-      frisby.create("Check whether get client details API returns a 200 when proper client details are passed ")
+      frisby.create("Check whether get client details API returns a 200 when proper client details are passed and also the data type returned")
       .get(serverDetails.url+response.data.id)
       .expectStatus(200)
       .expectHeaderContains('content-type','application/json')
@@ -49,25 +49,31 @@ frisby.create("")
       frisby.create("")
       .delete(serverDetails.url+response.data.id)
       .toss()
-      })
-      .toss();
+      }).toss();
+      
       
       
 frisby.create("Check whether get client details API returns a 404(Not Found Error) when invalid client details are passed ")
       .get(serverDetails.url+serverDetails.invalidClientId)
       .expectStatus(404)
-      .toss();
+      .expectJSON({
+    "exception": "client_not_found",
+    "error": "Client not found"
+}).toss();
       
-frisby.create("Check whether get client details API returns a 401(Not Found Error) when the authorization headers are not passed ")
+      
+frisby.create("Check whether get client details API returns a 401(UnAuthorized Error) when the authorization headers are not passed ")
       .get(serverDetails.url+serverDetails.clientId)
       .addHeader('Authorization', '')
       .expectStatus(401)
-      .toss();
+      .expectJSON({"error":"Access Denied","exception":"InvalidAuthentication"
+      }).toss();
+      
 
 
       
 //STEP1: We create a post request , this is to set the data up so that we can get() this in the later step.
-frisby.create("Create a dummy client")
+frisby.create("Create the test data")
 .post(serverDetails.url,{
             email:serverDetails.email,
             description:serverDetails.description
@@ -90,11 +96,6 @@ frisby.create("Create a dummy client")
       frisby.create("")
       .delete(serverDetails.url+response.data.id)
       .toss()
-      })
-      .toss();
+      }).toss();
       
-frisby.create("Check whether get client details API returns a 401(Not Found Error) when the authorization headers are not passed ")
-      .get(serverDetails.url+serverDetails.clientId)
-      .addHeader('Authorization', '')
-      .expectStatus(401)
-      .toss();
+      

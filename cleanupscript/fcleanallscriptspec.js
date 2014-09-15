@@ -7,10 +7,10 @@ var serverDetails = {
 
 
 };
-
+//Please paste your Basic \u003CYOUR-BASE64-ENCODED-PRIVATE-API-KEY-WITH-TRAILING-COLON\u003E below 
 frisby.globalSetup({ 
   request: {
-    headers: { 'Authorization': 'Basic ZjlmYjkzZTYwOWQ0ZDhlNmRiMDRiZmQ0MDBiYjM2MTU6Og==' }
+    headers: { 'Authorization': 'Basic \u003CYOUR-BASE64-ENCODED-PRIVATE-API-KEY-WITH-TRAILING-COLON\u003E' }
   }
 });
 frisby.create("This is a clean up operation")

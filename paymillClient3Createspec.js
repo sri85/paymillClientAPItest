@@ -19,11 +19,11 @@ var undefinedDescription;
 
 
 
-
+//Global setup which will be used for all the requests,,Please paste Basic \u003CYOUR-BASE64-ENCODED-PRIVATE-API-KEY-WITH-TRAILING-COLON\u003E
 
 frisby.globalSetup({ 
   request: {
-    headers: { 'Authorization': 'Basic ZjlmYjkzZTYwOWQ0ZDhlNmRiMDRiZmQ0MDBiYjM2MTU6Og==' }
+    headers: { 'Authorization': 'Basic \u003CYOUR-BASE64-ENCODED-PRIVATE-API-KEY-WITH-TRAILING-COLON\u003E' }
   }
 });
 

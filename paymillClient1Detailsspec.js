@@ -8,10 +8,10 @@ var serverDetails = {
 "thirdTestEmail":"test@1.pl"
 
 };
-//Global setup which will be used for all the requests
+//Global setup which will be used for all the requests ,Please paste Basic \u003CYOUR-BASE64-ENCODED-PRIVATE-API-KEY-WITH-TRAILING-COLON\u003E
 frisby.globalSetup({ 
   request: {
-    headers: { 'Authorization': 'Basic ZjlmYjkzZTYwOWQ0ZDhlNmRiMDRiZmQ0MDBiYjM2MTU6Og==' }
+    headers: { 'Authorization': 'Basic  YOUR-BASE64-ENCODED-PRIVATE-API-KEY-WITH-TRAILING-COLON' }
   }
 });
 

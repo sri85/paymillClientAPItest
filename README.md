@@ -8,7 +8,7 @@ Frameworks used: frisbyjs(http://frisbyjs.com/)  and  jasmine-node (https://gith
 What do you need ?
 
 1. Download and install nodejs .(http://nodejs.org/)
-2. Install frisbyjsusing the command npm install -g frisby 
+2. Install frisbyjs using the command `npm install -g frisby`
 3. Install jasmine node using (npm install -g jasmine-node)
 
 Before running the tests:(Configuration)
